@@ -1,0 +1,99 @@
+# depslib dependency file v1.0
+1767183677 source:c:\users\e.merve\onedrive\masaüstü\github\algoritma_analizi_proje\main.cpp
+	<iostream>
+	"max_subsequence.h"
+	"recursive_module.h"
+	"searching_module.h"
+	"sorting_module.h"
+	"heap_module.h"
+	"utils.h"
+	"greedy_module.h"
+	"dp_module.h"
+
+1767100532 c:\users\e.merve\onedrive\masaüstü\github\algoritma_analizi_proje\max_subsequence.h
+	<vector>
+
+1767098340 c:\users\e.merve\onedrive\masaüstü\github\algoritma_analizi_proje\recursive_module.h
+
+1767099803 c:\users\e.merve\onedrive\masaüstü\github\algoritma_analizi_proje\searching_module.h
+
+1767098208 c:\users\e.merve\onedrive\masaüstü\github\algoritma_analizi_proje\utils.h
+	<vector>
+	<string>
+	<functional>
+
+1767098900 source:c:\users\e.merve\onedrive\masaüstü\github\algoritma_analizi_proje\max_subsequence.cpp
+	<iostream>
+	<vector>
+	<algorithm>
+	<chrono>
+	<iomanip>
+	"utils.h"
+	"max_subsequence.h"
+
+1767099220 source:c:\users\e.merve\onedrive\masaüstü\github\algoritma_analizi_proje\recursive_module.cpp
+	"recursive_module.h"
+	"utils.h"
+	<iostream>
+	<vector>
+	<limits>
+
+1767099252 source:c:\users\e.merve\onedrive\masaüstü\github\algoritma_analizi_proje\searching_module.cpp
+	"searching_module.h"
+	"utils.h"
+	<iostream>
+	<vector>
+	<algorithm>
+	<iomanip>
+	<cstdlib>
+
+1767098262 source:c:\users\e.merve\onedrive\masaüstü\github\algoritma_analizi_proje\utils.cpp
+	"utils.h"
+	<iostream>
+	<limits>
+	<random>
+	<chrono>
+
+1767180228 c:\users\e.merve\onedrive\masaüstü\github\algoritma_analizi_proje\sorting_module.h
+
+1767181170 source:c:\users\e.merve\onedrive\masaüstü\github\algoritma_analizi_proje\sorting_module.cpp
+	"sorting_module.h"
+	"utils.h"
+	<iostream>
+	<vector>
+	<algorithm>
+	<queue>
+	<limits>
+	<cstdlib>
+	<chrono>
+	<functional>
+	<iomanip>
+
+1767182691 source:c:\users\e.merve\onedrive\masaüstü\github\algoritma_analizi_proje\heap_module.cpp
+	"heap_module.h"
+	"utils.h"
+	<iostream>
+	<vector>
+	<chrono>
+	<functional>
+	<iomanip>
+	<algorithm>
+
+1767182004 c:\users\e.merve\onedrive\masaüstü\github\algoritma_analizi_proje\heap_module.h
+
+1767183204 source:c:\users\e.merve\onedrive\masaüstü\github\algoritma_analizi_proje\greedy_module.cpp
+	"greedy_module.h"
+	"utils.h"
+	<iostream>
+	<vector>
+	<algorithm>
+	<queue>
+	<unordered_map>
+	<string>
+	<chrono>
+	<iomanip>
+
+1767183112 c:\users\e.merve\onedrive\masaüstü\github\algoritma_analizi_proje\greedy_module.h
+
+1767183588 c:\users\e.merve\onedrive\masaüstü\github\algoritma_analizi_proje\dp_module.h
+
