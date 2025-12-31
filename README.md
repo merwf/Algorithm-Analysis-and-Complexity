@@ -66,7 +66,7 @@ algorithms using theoretical complexity and practical time measurements.
 ---
 
 ## Project Structure
-
+```
 ├── main.cpp
 ├── utils.h / utils.cpp
 ├── searching_module.h / searching_module.cpp
@@ -76,7 +76,7 @@ algorithms using theoretical complexity and practical time measurements.
 ├── dp_module.h / dp_module.cpp
 ├── max_subsequence.h / max_subsequence.cpp
 ├── recursive_module.h / recursive_module.cpp
-
+```
 
 ## How to Run
 
