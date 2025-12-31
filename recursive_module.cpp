@@ -16,21 +16,21 @@ static long long sum1toN_rec(int n, long long& calls) {
     return sum1toN_rec(n - 1, calls) + n;
 }
 
-// 2) Dizi toplamý: Sum(A[0..N-1], N) = Sum(A[0..N-2], N-1) + A[N-1]
+// 2) Dizi toplam
 static long long sumArray_rec(const vector<int>& a, int n, long long& calls) {
     calls++;
     if (n == 1) return a[0];           // base case
     return sumArray_rec(a, n - 1, calls) + a[n - 1];
 }
 
-// 3) a^n (lineer): a^n = a * a^(n-1)
+// 3) a^n (lineer)
 static long long power_rec_linear(long long a, int n, long long& calls) {
     calls++;
     if (n == 0) return 1;              // base case
     return a * power_rec_linear(a, n - 1, calls);
 }
 
-// (Bonus) 3b) a^n (hýzlý): exponentiation by squaring
+// 3) a^n (speed)
 static long long power_rec_fast(long long a, int n, long long& calls) {
     calls++;
     if (n == 0) return 1;
@@ -40,7 +40,7 @@ static long long power_rec_fast(long long a, int n, long long& calls) {
     return half * half * a;
 }
 
-// 4) Fibonacci (naive): F(n)=F(n-1)+F(n-2)
+// 4) Fibonacci
 static long long fib_rec(int n, long long& calls) {
     calls++;
     if (n == 0) return 0;

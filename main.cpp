@@ -12,7 +12,7 @@
 using namespace std;
 
 static void printMenu() {
-    cout << "\n==============================\n";
+    cout << "==============================\n";
     cout << "Algoritma Analizi Proje Menusu\n";
     cout << "==============================\n";
     cout << "1 - Maximum Subsequence Problem\n";

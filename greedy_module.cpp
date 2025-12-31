@@ -39,9 +39,9 @@ static int autoRepeatForN(int n) {
 }
 
 /* =========================================================
-   6.1 Ýþ Zamanlama Problemi (GreedyJobScheduler)
-   - GreedyJobScheduler1: iþleri süreye göre sýrala (SJF)
-   - GreedyJobScheduler2: sürelerden min-heap kur, sýrayla çek
+   6.1 Is Zamanlama Problemi (GreedyJobScheduler)
+   - GreedyJobScheduler1: isleri sureye göre sirala (SJF)
+   - GreedyJobScheduler2: surelerden min-heap kur, sirayla çek
    Her ikisi de O(n log n)
    ========================================================= */
 struct Job {
@@ -49,12 +49,10 @@ struct Job {
     int duration;
 };
 
-// Slayt: "Ýþleri çalýþma sürelerine göre sýrala. En kýsa iþ önce."
 static long long greedyJobScheduler1(vector<Job>& jobs) {
     sort(jobs.begin(), jobs.end(),
          [](const Job& a, const Job& b){ return a.duration < b.duration; });
 
-    // çýktý üretmiyoruz; sadece bir "toplam" hesaplayýp sink'e atýyoruz
     long long totalCompletion = 0;
     long long t = 0;
     for (auto& j : jobs) {
@@ -64,7 +62,6 @@ static long long greedyJobScheduler1(vector<Job>& jobs) {
     return totalCompletion;
 }
 
-// Slayt: "Ýþlerin sürelerinden min-heap oluþtur, en küçüðü çek"
 static long long greedyJobScheduler2(const vector<Job>& jobs) {
     priority_queue<int, vector<int>, greater<int>> pq;
     for (auto& j : jobs) pq.push(j.duration);
@@ -81,7 +78,6 @@ static long long greedyJobScheduler2(const vector<Job>& jobs) {
 
 /* =========================================================
    6.2 Aktivite Zamanlama Problemi (ActivityScheduling)
-   Slayt: finish time'a göre sýrala, ilkini al, çakýþmayanlarý seç
    O(n log n) (sort) + O(n)
    ========================================================= */
 struct Activity {
@@ -111,13 +107,12 @@ static vector<Activity> activityScheduling(vector<Activity> acts) {
 
 /* =========================================================
    6.3 Huffman Kodlama (encode/decode)
-   Slayt mantýðý:
-   - frekanslarý say
-   - min-heap Q (freq'e göre)
+   - frekanslari say
+   - min-heap Q (freq'e gore)
    - extractMin x2, yeni z node, tekrar insert
-   - aðaç oluþunca kodlarý üret (0/1)
+   - agaç olusunca kodlari uret (0/1)
    - encode: metni koda çevir
-   - decode: bitleri aðaçta gez
+   - decode: bitleri agaçta gez
    ========================================================= */
 struct HuffNode {
     unsigned char ch;
@@ -138,7 +133,6 @@ static void buildCodes(HuffNode* node, const string& path,
                        unordered_map<unsigned char, string>& codes) {
     if (!node) return;
     if (!node->left && !node->right) {
-        // Tek karakterlik metinde boþ kod olmasýn diye "0" ver
         codes[node->ch] = path.empty() ? "0" : path;
         return;
     }
@@ -194,7 +188,6 @@ static string huffmanEncode(const string& text,
 
 static string huffmanDecode(const string& bits, HuffNode* root) {
     if (!root) return "";
-    // Tek sembol varsa: her bit ayný karakter
     if (!root->left && !root->right) {
         return string(bits.size(), (char)root->ch);
     }
@@ -214,7 +207,7 @@ static string huffmanDecode(const string& bits, HuffNode* root) {
 }
 
 /* =========================================================
-   ModuleGreedy: tek input = n (onerilen: 20000)
+   ModuleGreedy
    ========================================================= */
 void moduleGreedy() {
     cout << "\n=============================\n";
@@ -230,12 +223,12 @@ void moduleGreedy() {
     unsigned seed = 42;
 
     // ---------- 6.1 Jobs ----------
-    vector<int> durs = makeRandomArray(n, 1, 1000, seed); // süreler 1..1000
+    vector<int> durs = makeRandomArray(n, 1, 1000, seed);
     vector<Job> jobs; jobs.reserve(n);
     for (int i = 0; i < n; i++) jobs.push_back({i+1, durs[i]});
 
     // ---------- 6.2 Activities ----------
-    // Basit üretim: start random, finish = start + duration
+    //start random, finish = start + duration
     vector<int> starts = makeRandomArray(n, 0, 100000, seed);
     vector<int> lens   = makeRandomArray(n, 1, 1000, seed+1);
 
@@ -247,9 +240,8 @@ void moduleGreedy() {
     }
 
     // ---------- 6.3 Huffman text ----------
-    // textLen = min(n, 50000) (çok büyütmeyelim)
     int textLen = min(n, 50000);
-    vector<int> chars = makeRandomArray(textLen, 32, 122, seed+2); // okunabilir ASCII
+    vector<int> chars = makeRandomArray(textLen, 32, 122, seed+2);
     string text; text.reserve(textLen);
     for (int x : chars) text.push_back((char)x);
 
@@ -293,8 +285,7 @@ void moduleGreedy() {
     }, repeat);
     rows.push_back({"Huffman Encode", ns_henc});
 
-    // Huffman Decode (encode sonrasý bit string gerekli)
-    // Decode ölçümünde encode'yu dýþarýda bir kez hazýrlayalým (ölçüm içine karýþmasýn)
+    // Huffman Decode
     unordered_map<unsigned char, string> codes0;
     HuffNode* root0 = nullptr;
     string bits0 = huffmanEncode(text, codes0, root0);
@@ -307,7 +298,7 @@ void moduleGreedy() {
 
     freeTree(root0);
 
-    // ---- Yazdýr ----
+    // ---- Yazdir ----
     cout << "\n--- Greedy Zaman Olcumu (chrono) ---\n";
     cout << left << setw(28) << "Algoritma"
          << right << setw(14) << "avg(ns)"

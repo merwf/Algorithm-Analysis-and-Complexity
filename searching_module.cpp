@@ -29,7 +29,7 @@ static int linearSearchBackward(const vector<int>& a, int key, long long& comps)
     return -1;
 }
 
-// Ikili arama (dizi sirali olmali)
+// Ikili arama
 static int binarySearchIter(const vector<int>& aSorted, int key, long long& comps) {
     comps = 0;
     int left = 0, right = (int)aSorted.size() - 1;

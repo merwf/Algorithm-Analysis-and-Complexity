@@ -1,4 +1,3 @@
-// max_subsequence.cpp
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -10,7 +9,7 @@
 
 using namespace std;
 
-// -------------------- helpers (dosya ici) --------------------
+// -------------------- helpers --------------------
 static inline int max3(int a, int b, int c) {
     return max(a, max(b, c));
 }
@@ -18,7 +17,7 @@ static inline int max3(int a, int b, int c) {
 // Divide & Conquer helper (Alg3)
 static int maxSumRec(const vector<int>& a, int left, int right) {
     if (left == right) {
-        return max(0, a[left]); // slayt sarti: negatifse 0
+        return max(0, a[left]);
     }
 
     int center = (left + right) / 2;
@@ -42,7 +41,6 @@ static int maxSumRec(const vector<int>& a, int left, int right) {
     return max3(maxLeftSum, maxRightSum, maxLeftBorderSum + maxRightBorderSum);
 }
 
-// Tek iþi: job'i repeat kez calistir, toplam nanosecond ver
 static long long measureNsRepeat(const function<int()>& job, int repeat, int& lastResult) {
     auto start = chrono::high_resolution_clock::now();
     int r = 0;
@@ -52,17 +50,15 @@ static long long measureNsRepeat(const function<int()>& job, int repeat, int& la
     return chrono::duration_cast<chrono::nanoseconds>(end - start).count();
 }
 
-// Pozitif avg'ler icinden en kucugunu bul (x kat yavas hesabi icin)
 static double minPositive(double a, double b, double c, double d) {
     double best = 0.0;
     for (double x : {a, b, c, d}) {
         if (x > 0.0 && (best == 0.0 || x < best)) best = x;
     }
-    return best; // 0 => hepsi 0 (cok kucuk N, cok hizli)
+    return best;
 }
 
 // -------------------- Algorithms --------------------
-
 // Alg 1: O(n^3)
 int maxSubSum1(const vector<int>& a) {
     int maxSum = 0;
@@ -96,7 +92,7 @@ int maxSubSum3(const vector<int>& a) {
     return maxSumRec(a, 0, (int)a.size() - 1);
 }
 
-// Alg 4: O(n) Kadane (slayttaki)
+// Alg 4: O(n) Kadane
 int maxSubSum4(const vector<int>& a) {
     int maxSum = 0, thisSum = 0;
     for (int x : a) {
@@ -112,7 +108,6 @@ void moduleMaxSubsequence() {
     cout << "\n--- 1) Maximum Subsequence Problem ---\n";
     cout << "Slayt sarti: maksimum deger negatif cikarsa 0 kabul edilir.\n\n";
 
-    // Tek test tipi: kullanicidan N al (slayt ornegini istersen tekrar ekleriz)
     int n = readInt("Dizi boyutu N (10-5000 arasi onerilir): ", 1, 200000);
     vector<int> a = makeRandomArray(n, -50, 50, 42);
 
@@ -121,7 +116,6 @@ void moduleMaxSubsequence() {
     printVectorFirst(a, 10);
     cout << "\n";
 
-    // repeat ayarlari
     bool runN3 = (a.size() <= 800);
     int repeat    = (a.size() <= 2000 ? 5000 : 500);
     int repeatN3  = (a.size() <= 50 ? 2000 : 200);
@@ -144,7 +138,6 @@ void moduleMaxSubsequence() {
     double avg3 = (repeat>0) ? (double)ns3 / repeat : 0.0;
     double avg4 = (repeat>0) ? (double)ns4 / repeat : 0.0;
 
-    // Referans: 0'dan buyuk en kucuk avg
     double ref = minPositive(avg1, avg2, avg3, avg4);
 
     cout << left

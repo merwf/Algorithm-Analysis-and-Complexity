@@ -10,13 +10,6 @@
 #include <string>
 
 using namespace std;
-
-/* =========================
-   CHRONO: 0 çýkmasýn diye
-   - iþi "batch" kere çalýþtýr
-   - total_ns / batch => tek iþin süresi
-   - repeat’i otomatik büyüt
-   ========================= */
 static volatile long long g_sink = 0;
 
 template <class F>
@@ -39,18 +32,15 @@ static long long measureAvgNsBatch(F&& job, int repeat, int batch) {
     return avg / batch;
 }
 
-// küçük iþlerde 0 çýkmasýn diye repeat/batch ayarla
-static void pickMeasureParams(int n, int& repeat, int& batch) {
-    // n büyükse iþ zaten uzun: küçük batch yeter
-    if (n >= 10000) { repeat = 10; batch = 1; return; }
 
-    // DP modülündeki iþler genelde küçük: batch büyütelim
+static void pickMeasureParams(int n, int& repeat, int& batch) {
+    if (n >= 10000) { repeat = 10; batch = 1; return; }
     repeat = 30;
-    batch = 200; // 200 kez ayný iþi çalýþtýrýp ortalamasýný al
+    batch = 200;
 }
 
 /* =========================
-   TABLO YAZDIRMA (kýrpma)
+   TABLO YAZDIRMA (kirpma)
    ========================= */
 static void print2DTableCropped(const vector<vector<int>>& T,
                                const string& title,
@@ -107,8 +97,7 @@ static long long fibBottomUpTable(int n, vector<long long>& SolTable) {
 }
 
 /* =========================================================
-   7.2 Minimum Cost Path Top-Down (Memo)
-   dp[i][j] = M[i][j] + min(down,right)
+   7.2 Minimum Cost Path Top-Down
    ========================================================= */
 static int mcpTopDownAux(const vector<vector<int>>& M, vector<vector<int>>& dp, int i, int j) {
     int N = (int)M.size();
@@ -178,7 +167,7 @@ void moduleDP() {
     int knapN  = min(n, 20);
     int W      = 30;
 
-    // otomatik test verileri (kullanýcýdan istemiyoruz!)
+    // otomatik test verileri
     vector<long long> fibTable;
 
     vector<vector<int>> M(gridN, vector<int>(gridN, 1));
@@ -204,7 +193,7 @@ void moduleDP() {
     vector<vector<int>> knapDP;
     int knapAns = 0;
 
-    // ölçüm parametreleri (0 çýkmasýn diye)
+    // ölçüm parametreleri (0 çikmasin diye)
     int repeat, batch;
     pickMeasureParams(n, repeat, batch);
 
@@ -244,7 +233,7 @@ void moduleDP() {
              << right << setw(12) << (ns_knap / 1000) << "\n";
     };
 
-    // Menü döngüsü: kullanýcý seçsin, konsol þiþmesin
+    // Menü döngüsü: kullanici girdisi
     while (true) {
         printDpMenu();
         int c = readInt("Secim: ", 0, 5);
@@ -266,8 +255,8 @@ void moduleDP() {
         }
         else if (c == 4) {
             printTimeTable();
-            int showItems = min(knapN + 1, 7); // 0..6
-            int showW = min(W + 1, 16);        // 0..15
+            int showItems = min(knapN + 1, 7);
+            int showW = min(W + 1, 16);
             print2DTableCropped(knapDP, "Knapsack DP Tablosu (ornek: ilk 6 item, W<=15)", showItems, showW);
             cout << "\nKnapsack optimum = dp[" << knapN << "][" << W << "] = " << knapAns << "\n";
         }

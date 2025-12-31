@@ -12,17 +12,16 @@ using namespace std;
 
 struct HeapStats {
     long long comps = 0;
-    long long moves = 0; // swap/atama gibi veri hareketleri
+    long long moves = 0;
 };
 
 static inline void swapCount(int& a, int& b, HeapStats& st) {
     std::swap(a, b);
-    st.moves += 3; // swap ~ 3 assignment gibi sayıyoruz (raporda böyle yazabilirsin)
+    st.moves += 3;
 }
 
 class BinaryHeap {
 public:
-    // 1-indexed heap: H[1] root
     vector<int> H;
     int N = 0;
     bool isMinHeap = true;
@@ -41,7 +40,7 @@ public:
         return isMinHeap ? (a < b) : (a > b);
     }
 
-    // findMin / findMax (root)
+    // findMin / findMax
     int findTop(HeapStats& st, bool& ok) const {
         (void)st;
         if (N <= 0) { ok = false; return 0; }
@@ -59,7 +58,7 @@ public:
         }
     }
 
-    // heapify down (DeleteMin/DeleteMax bunu kullanır)
+    // heapify down (DeleteMin/DeleteMax)
     void heapifyDown(int node, HeapStats& st) {
         while (true) {
             int left = 2 * node;
@@ -116,8 +115,6 @@ public:
         int old = H[index];
         H[index] = newVal; st.moves++;
 
-        // min-heap: newVal küçüldüyse yukarı, büyüdüyse aşağı
-        // max-heap: newVal küçüldüyse aşağı, büyüdüyse yukarı
         if (isMinHeap) {
             st.comps++;
             if (newVal < old) heapifyUp(index, st);
@@ -130,16 +127,12 @@ public:
     }
 
     void increaseKey(int index, int newVal, HeapStats& st, bool& ok) {
-        // decreaseKey ile aynı mantık; isim için ayrı fonksiyon
         decreaseKey(index, newVal, st, ok);
     }
 
-    // deleteKey(index): index'i top'a daha iyi hale getir -> deleteTop
     void deleteKey(int index, HeapStats& st, bool& ok) {
         if (index < 1 || index > N) { ok = false; return; }
         ok = true;
-
-        // index'i köke taşı: min heap => çok küçük yap, max heap => çok büyük yap
         if (isMinHeap) {
             H[index] = std::numeric_limits<int>::min(); st.moves++;
             heapifyUp(index, st);
@@ -147,7 +140,6 @@ public:
             H[index] = std::numeric_limits<int>::max(); st.moves++;
             heapifyUp(index, st);
         }
-
         bool ok2;
         (void)deleteTop(st, ok2);
     }
@@ -164,7 +156,7 @@ public:
     }
 };
 
-// chrono: avg ns
+// chrono
 static volatile long long g_sink = 0;
 
 template <class F>
@@ -215,15 +207,12 @@ void moduleHeap() {
     cout << " 5) HEAP YAPILARI (Binary Heap)\n";
     cout << "=============================\n";
 
-    // ✅ Sadece N kullanıcıdan: önerilen değer parantez içinde
     int n = readInt("Eleman sayisi n (onerilen: 20000): ", 1, 200000);
-    int repeat = 15; // otomatik (uzatmasın diye). İstersen 10/20 de yaparız.
+    int repeat = 15;
 
-    // veri otomatik
     unsigned seed = 42;
     vector<int> data = makeRandomArray(n, 0, 1'000'000, seed);
 
-    // Demo indeksleri (kullanıcı sormuyoruz)
     int idx1 = max(1, n / 3);
     int idx2 = max(1, n / 2);
 
@@ -301,9 +290,9 @@ void moduleHeap() {
                 h.buildHeap(data, lst);
 
                 bool ok1, ok2;
-                // decreaseKey: değeri çok küçült -> yukarı çıkmalı
+                // decreaseKey
                 h.decreaseKey(idx1, -100, lst, ok1);
-                // increaseKey: değeri çok büyüt -> aşağı inmeli
+                // increaseKey
                 h.increaseKey(idx2, 2'000'000, lst, ok2);
 
                 st = lst;
@@ -428,9 +417,9 @@ void moduleHeap() {
                 h.buildHeap(data, lst);
 
                 bool ok1, ok2;
-                // increaseKey: çok büyüt -> yukarı çıkmalı (max-heap)
+                // increaseKey
                 h.increaseKey(idx1, 2'000'000, lst, ok1);
-                // decreaseKey: çok küçült -> aşağı inmeli
+                // decreaseKey
                 h.decreaseKey(idx2, -100, lst, ok2);
 
                 st = lst;

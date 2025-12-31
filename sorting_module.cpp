@@ -15,7 +15,7 @@ using namespace std;
 
 struct SortStats {
     long long comps = 0;
-    long long swaps = 0; // insertion/merge/counting/radix'te "move" gibi düþünebilirsin
+    long long swaps = 0;
 };
 
 static inline void doSwap(int& x, int& y, SortStats& st) {
@@ -64,8 +64,8 @@ static void insertionSort(vector<int>& A, SortStats& st) {
         while (j > 0) {
             st.comps++;
             if (A[j - 1] > tmp) {
-                A[j] = A[j - 1]; // shift
-                st.swaps++;      // move
+                A[j] = A[j - 1];
+                st.swaps++;
                 j--;
             } else break;
         }
@@ -104,7 +104,7 @@ static void mergeSort(vector<int>& A, SortStats& st) {
 }
 
 /* =========================================================
-   5) QuickSort (Pivot = First)  -- SLAYT mantýðý (pointer QS)
+   5) QuickSort (Pivot = First)
    ========================================================= */
 static int partitionFirstPivot(int A[], int N, SortStats& st) {
     if (N <= 1) return 0;
@@ -310,7 +310,7 @@ static vector<int> externalSortSim(const vector<int>& input, int M, SortStats& s
 }
 
 /* =========================================================
-   CHRONO measure (ns)  -> 0us sorunu biter
+   CHRONO measure (ns)
    ========================================================= */
 static volatile long long g_sink = 0;
 
@@ -324,13 +324,13 @@ static long long measureNsRepeatChrono(F&& job, int repeat) {
         int last = job();
         auto t2 = clock::now();
         total += std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count();
-        g_sink += last; // optimizasyon engeli
+        g_sink += last;
     }
     return total / repeat; // avg ns
 }
 
 /* =========================================================
-   Data generator (senaryo)
+   Data generator
    ========================================================= */
 enum class DataCase { Random = 1, Sorted = 2, Reverse = 3, FewUnique = 4 };
 
@@ -343,7 +343,6 @@ static vector<int> makeCaseArray(int n, int lo, int hi, unsigned seed, DataCase 
         sort(a.begin(), a.end());
         reverse(a.begin(), a.end());
     } else if (dc == DataCase::FewUnique) {
-        // az farklý deðer üret (ör: 0..9 arasý)
         int smallLo = 0, smallHi = 9;
         a = makeRandomArray(n, smallLo, smallHi, seed);
     }
@@ -351,7 +350,7 @@ static vector<int> makeCaseArray(int n, int lo, int hi, unsigned seed, DataCase 
 }
 
 /* =========================================================
-   Run single algorithm (chrono + stats)
+   Run single algorithm
    ========================================================= */
 struct RunResult {
     string name;
@@ -416,7 +415,7 @@ static RunResult runAlgoChrono(const vector<int>& base, int algoChoice, int repe
 }
 
 /* =========================================================
-   Module UI (az input + compare)
+   Module UI
    ========================================================= */
 static void printSortMenu() {
     cout << "\n=============================\n";
@@ -464,7 +463,6 @@ static DataCase pickCase() {
 }
 
 static int autoRepeatForN(int n) {
-    // süre 0us olmasýn diye otomatik repeat
     if (n <= 2000) return 50;
     if (n <= 10000) return 20;
     return 10;
@@ -479,11 +477,9 @@ void moduleSorting() {
         DataCase dc = pickCase();
         int n = pickNFromPreset();
 
-        // aralýklarý otomatik verelim (elle uðraþtýrmasýn)
         int lo = 0, hi = 1000000;
         if (dc == DataCase::FewUnique) { lo = 0; hi = 9; }
 
-        // Radix için negatif yok:
         if (algo == 9) { lo = 0; if (hi < 0) hi = 1000000; }
 
         unsigned seed = 42;
@@ -492,21 +488,17 @@ void moduleSorting() {
         cout << "\nOrnek (ilk 10): ";
         printVectorFirst(base, 10);
 
-        // repeat otomatik, istersen yine sorabiliriz ama uzamasýn
         int repeat = autoRepeatForN(n);
         cout << "repeat (auto) = " << repeat << "\n";
 
-        // Counting için range küçük olmalý -> fewunique seçilirse çok iyi çalýþýr
         int minV = lo, maxV = hi;
         if (algo == 8 && (long long)maxV - minV + 1 > 5'000'000LL) {
-            cout << "Counting icin range cok buyuk! (FewUnique secmen daha iyi)\n";
+            cout << "Counting icin range cok buyuk!\n";
         }
 
-        // External sim için chunk size (M)
         int memM = (algo == 10) ? max(1, n / 10) : n;
 
         if (algo == 11) {
-            // Hepsini karþýlaþtýr tablosu
             cout << "\n--- Karsilastirma Tablosu ---\n";
             cout << "n=" << n << "  case=" << (int)dc << "  repeat=" << repeat << "\n\n";
 
@@ -520,9 +512,7 @@ void moduleSorting() {
 
             cout << string(18+14+12+14+14, '-') << "\n";
 
-            // O(n^2) olanlarý büyük n'de istersen atlayabiliriz ama þimdilik hepsini çalýþtýrýyoruz.
             for (int a = 1; a <= 10; a++) {
-                // Radix >=0, Counting range kontrolü: base zaten uygun üretildi
                 RunResult r = runAlgoChrono(base, a, repeat, minV, maxV, memM);
 
                 if (!r.ok) {
@@ -543,7 +533,6 @@ void moduleSorting() {
             continue;
         }
 
-        // Tek algoritma çalýþtýr
         RunResult r = runAlgoChrono(base, algo, repeat, minV, maxV, memM);
 
         cout << "\n=== " << r.name << " ===\n";
